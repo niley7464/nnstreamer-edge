@@ -1116,7 +1116,12 @@ _nns_edge_accept_socket (nns_edge_handle_s * eh)
       goto error;
     }
 
-    nns_edge_parse_host_string (cmd.mem[0], &dest_host, &dest_port);
+    if (eh->dest_host && eh->dest_port != 0) {
+      dest_host = eh->dest_host;
+      dest_port = eh->dest_port;
+    } else {
+      nns_edge_parse_host_string (cmd.mem[0], &dest_host, &dest_port);
+    }
     _nns_edge_cmd_clear (&cmd);
 
     /* Connect to client listener. */
